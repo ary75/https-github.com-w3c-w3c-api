@@ -42,15 +42,15 @@ If you’d like to use the repository from source, you can either install from g
 To install via git:
 
 ```bash
-npm install git+ssh://git@github.com:stainless-sdks/sdk-nikahdnara-node.git
+npm install git+ssh://git@github.com:ary75/w3c-w3c-api.github.io.git
 ```
 
 Alternatively, to link a local copy of the repo:
 
 ```bash
 # Clone
-git clone https://www.github.com/stainless-sdks/sdk-nikahdnara-node
-cd sdk-nikahdnara-node
+git clone https://www.github.com/ary75/w3c-w3c-api.github.io
+cd w3c-w3c-api.github.io
 
 # With yarn
 yarn link
@@ -99,7 +99,7 @@ the changes aren't made through the automated pipeline, you may want to make rel
 
 ### Publish with a GitHub workflow
 
-You can release to package managers by using [the `Publish NPM` GitHub action](https://www.github.com/stainless-sdks/sdk-nikahdnara-node/actions/workflows/publish-npm.yml). This requires a setup organization or repository secret to be set up.
+You can release to package managers by using [the `Publish NPM` GitHub action](https://www.github.com/ary75/w3c-w3c-api.github.io/actions/workflows/publish-npm.yml). This requires a setup organization or repository secret to be set up.
 
 ### Publish manually
 
