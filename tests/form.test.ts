@@ -1,6 +1,6 @@
-import { multipartFormRequestOptions, createForm } from 'sdk-nikahdnara/core';
-import { Blob } from 'sdk-nikahdnara/_shims/index';
-import { toFile } from 'sdk-nikahdnara';
+import { multipartFormRequestOptions, createForm } from 'petstore/core';
+import { Blob } from 'petstore/_shims/index';
+import { toFile } from 'petstore';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {

@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "sdk-nikahdnara/*": ["dist/src/*"],
-      "sdk-nikahdnara": ["dist/src/index.ts"],
+      "petstore/*": ["dist/src/*"],
+      "petstore": ["dist/src/index.ts"],
     },
     "noEmit": false,
     "declaration": true,

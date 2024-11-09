@@ -9,9 +9,9 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {
-      "sdk-nikahdnara/_shims/auto/*": ["src/_shims/auto/*-node"],
-      "sdk-nikahdnara/*": ["src/*"],
-      "sdk-nikahdnara": ["src/index.ts"],
+      "petstore/_shims/auto/*": ["src/_shims/auto/*-node"],
+      "petstore/*": ["src/*"],
+      "petstore": ["src/index.ts"]
     },
     "noEmit": true,
 
@@ -32,6 +32,7 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
+		"isolatedModules": false,
 
     "skipLibCheck": true
   }
