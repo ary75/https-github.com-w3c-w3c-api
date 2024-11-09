@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import * as Core from 'sdk-nikahdnara/core';
-import { APIResource } from 'sdk-nikahdnara/resource';
-import { isRequestOptions } from 'sdk-nikahdnara/core';
-import * as StoreAPI from 'sdk-nikahdnara/resources/store/store';
-import * as Shared from 'sdk-nikahdnara/resources/shared';
-import * as OrderAPI from 'sdk-nikahdnara/resources/store/order';
+import { APIResource } from '../../resource';
+import { isRequestOptions } from '../../core';
+import * as Core from '../../core';
+import * as Shared from '../shared';
+import * as OrderAPI from './order';
+import { Order } from './order';
 
 export class Store extends APIResource {
   order: OrderAPI.Order = new OrderAPI.Order(this._client);
@@ -52,8 +52,13 @@ export interface StoreCreateOrderParams {
   status?: 'placed' | 'approved' | 'delivered';
 }
 
-export namespace Store {
-  export import StoreInventoryResponse = StoreAPI.StoreInventoryResponse;
-  export import StoreCreateOrderParams = StoreAPI.StoreCreateOrderParams;
-  export import Order = OrderAPI.Order;
+Store.Order = Order;
+
+export declare namespace Store {
+  export {
+    type StoreInventoryResponse as StoreInventoryResponse,
+    type StoreCreateOrderParams as StoreCreateOrderParams,
+  };
+
+  export { Order as Order };
 }

@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import * as Core from 'sdk-nikahdnara/core';
-import { APIResource } from 'sdk-nikahdnara/resource';
-import { isRequestOptions } from 'sdk-nikahdnara/core';
-import * as PetsAPI from 'sdk-nikahdnara/resources/pets';
+import { APIResource } from '../resource';
+import { isRequestOptions } from '../core';
+import * as Core from '../core';
+import { type BlobLike } from '../uploads';
 
 export class Pets extends APIResource {
   /**
@@ -104,20 +104,17 @@ export class Pets extends APIResource {
    */
   uploadImage(
     petId: number,
-    params?: PetUploadImageParams,
-    options?: Core.RequestOptions,
-  ): Core.APIPromise<APIResponse>;
-  uploadImage(petId: number, options?: Core.RequestOptions): Core.APIPromise<APIResponse>;
-  uploadImage(
-    petId: number,
-    params: PetUploadImageParams | Core.RequestOptions = {},
+    params: PetUploadImageParams,
     options?: Core.RequestOptions,
   ): Core.APIPromise<APIResponse> {
-    if (isRequestOptions(params)) {
-      return this.uploadImage(petId, {}, params);
-    }
-    const { additionalMetadata } = params;
-    return this._client.post(`/pet/${petId}/uploadImage`, { query: { additionalMetadata }, ...options });
+    const { body, additionalMetadata } = params;
+    return this._client.post(`/pet/${petId}/uploadImage`, {
+      query: { additionalMetadata },
+      body: body,
+      ...options,
+      headers: { 'Content-Type': 'application/octet-stream', ...options?.headers },
+      __binaryRequest: true,
+    });
   }
 }
 
@@ -254,20 +251,27 @@ export interface PetUpdateByIDParams {
 
 export interface PetUploadImageParams {
   /**
-   * Additional Metadata
+   * Body param:
+   */
+  body: string | ArrayBufferView | ArrayBuffer | BlobLike;
+
+  /**
+   * Query param: Additional Metadata
    */
   additionalMetadata?: string;
 }
 
-export namespace Pets {
-  export import APIResponse = PetsAPI.APIResponse;
-  export import Pet = PetsAPI.Pet;
-  export import PetFindByStatusResponse = PetsAPI.PetFindByStatusResponse;
-  export import PetFindByTagsResponse = PetsAPI.PetFindByTagsResponse;
-  export import PetCreateParams = PetsAPI.PetCreateParams;
-  export import PetUpdateParams = PetsAPI.PetUpdateParams;
-  export import PetFindByStatusParams = PetsAPI.PetFindByStatusParams;
-  export import PetFindByTagsParams = PetsAPI.PetFindByTagsParams;
-  export import PetUpdateByIDParams = PetsAPI.PetUpdateByIDParams;
-  export import PetUploadImageParams = PetsAPI.PetUploadImageParams;
+export declare namespace Pets {
+  export {
+    type APIResponse as APIResponse,
+    type Pet as Pet,
+    type PetFindByStatusResponse as PetFindByStatusResponse,
+    type PetFindByTagsResponse as PetFindByTagsResponse,
+    type PetCreateParams as PetCreateParams,
+    type PetUpdateParams as PetUpdateParams,
+    type PetFindByStatusParams as PetFindByStatusParams,
+    type PetFindByTagsParams as PetFindByTagsParams,
+    type PetUpdateByIDParams as PetUpdateByIDParams,
+    type PetUploadImageParams as PetUploadImageParams,
+  };
 }
