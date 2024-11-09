@@ -42,12 +42,12 @@ export let isFsReadStream: Shims['isFsReadStream'] | undefined = undefined;
 export function setShims(shims: Shims, options: { auto: boolean } = { auto: false }) {
   if (auto) {
     throw new Error(
-      `you must \`import 'sdk-nikahdnara/shims/${shims.kind}'\` before importing anything else from sdk-nikahdnara`,
+      `you must \`import 'petstore/shims/${shims.kind}'\` before importing anything else from petstore`,
     );
   }
   if (kind) {
     throw new Error(
-      `can't \`import 'sdk-nikahdnara/shims/${shims.kind}'\` after \`import 'sdk-nikahdnara/shims/${kind}'\``,
+      `can't \`import 'petstore/shims/${shims.kind}'\` after \`import 'petstore/shims/${kind}'\``,
     );
   }
   auto = options.auto;

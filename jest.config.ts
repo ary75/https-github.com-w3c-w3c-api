@@ -7,9 +7,9 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^sdk-nikahdnara$': '<rootDir>/src/index.ts',
-    '^sdk-nikahdnara/_shims/auto/(.*)$': '<rootDir>/src/_shims/auto/$1-node',
-    '^sdk-nikahdnara/(.*)$': '<rootDir>/src/$1',
+    '^petstore$': '<rootDir>/src/index.ts',
+    '^petstore/_shims/auto/(.*)$': '<rootDir>/src/_shims/auto/$1-node',
+    '^petstore/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/ecosystem-tests/',
