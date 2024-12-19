@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Petstore from 'sdk-nikahdnara';
-import { APIUserAbortError } from 'sdk-nikahdnara';
-import { Headers } from 'sdk-nikahdnara/core';
+import Petstore from 'petstore';
+import { APIUserAbortError } from 'petstore';
+import { Headers } from 'petstore/core';
 import defaultFetch, { Response, type RequestInit, type RequestInfo } from 'node-fetch';
 
 describe('instantiate client', () => {
@@ -177,7 +177,7 @@ describe('instantiate client', () => {
     expect(client.apiKey).toBe('My API Key');
   });
 
-  test('with overriden environment variable arguments', () => {
+  test('with overridden environment variable arguments', () => {
     // set options via env var
     process.env['PETSTORE_API_KEY'] = 'another My API Key';
     const client = new Petstore({ apiKey: 'My API Key' });
@@ -239,6 +239,122 @@ describe('retries', () => {
         .then((r) => r.text()),
     ).toEqual(JSON.stringify({ a: 1 }));
     expect(count).toEqual(3);
+  });
+
+  test('retry count header', async () => {
+    let count = 0;
+    let capturedRequest: RequestInit | undefined;
+    const testFetch = async (url: RequestInfo, init: RequestInit = {}): Promise<Response> => {
+      count++;
+      if (count <= 2) {
+        return new Response(undefined, {
+          status: 429,
+          headers: {
+            'Retry-After': '0.1',
+          },
+        });
+      }
+      capturedRequest = init;
+      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
+    };
+
+    const client = new Petstore({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
+
+    expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
+
+    expect((capturedRequest!.headers as Headers)['x-stainless-retry-count']).toEqual('2');
+    expect(count).toEqual(3);
+  });
+
+  test('omit retry count header', async () => {
+    let count = 0;
+    let capturedRequest: RequestInit | undefined;
+    const testFetch = async (url: RequestInfo, init: RequestInit = {}): Promise<Response> => {
+      count++;
+      if (count <= 2) {
+        return new Response(undefined, {
+          status: 429,
+          headers: {
+            'Retry-After': '0.1',
+          },
+        });
+      }
+      capturedRequest = init;
+      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
+    };
+    const client = new Petstore({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
+
+    expect(
+      await client.request({
+        path: '/foo',
+        method: 'get',
+        headers: { 'X-Stainless-Retry-Count': null },
+      }),
+    ).toEqual({ a: 1 });
+
+    expect(capturedRequest!.headers as Headers).not.toHaveProperty('x-stainless-retry-count');
+  });
+
+  test('omit retry count header by default', async () => {
+    let count = 0;
+    let capturedRequest: RequestInit | undefined;
+    const testFetch = async (url: RequestInfo, init: RequestInit = {}): Promise<Response> => {
+      count++;
+      if (count <= 2) {
+        return new Response(undefined, {
+          status: 429,
+          headers: {
+            'Retry-After': '0.1',
+          },
+        });
+      }
+      capturedRequest = init;
+      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
+    };
+    const client = new Petstore({
+      apiKey: 'My API Key',
+      fetch: testFetch,
+      maxRetries: 4,
+      defaultHeaders: { 'X-Stainless-Retry-Count': null },
+    });
+
+    expect(
+      await client.request({
+        path: '/foo',
+        method: 'get',
+      }),
+    ).toEqual({ a: 1 });
+
+    expect(capturedRequest!.headers as Headers).not.toHaveProperty('x-stainless-retry-count');
+  });
+
+  test('overwrite retry count header', async () => {
+    let count = 0;
+    let capturedRequest: RequestInit | undefined;
+    const testFetch = async (url: RequestInfo, init: RequestInit = {}): Promise<Response> => {
+      count++;
+      if (count <= 2) {
+        return new Response(undefined, {
+          status: 429,
+          headers: {
+            'Retry-After': '0.1',
+          },
+        });
+      }
+      capturedRequest = init;
+      return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
+    };
+    const client = new Petstore({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
+
+    expect(
+      await client.request({
+        path: '/foo',
+        method: 'get',
+        headers: { 'X-Stainless-Retry-Count': '42' },
+      }),
+    ).toEqual({ a: 1 });
+
+    expect((capturedRequest!.headers as Headers)['x-stainless-retry-count']).toBe('42');
   });
 
   test('retry on 429 with retry-after', async () => {

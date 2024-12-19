@@ -1,24 +1,23 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import * as Core from 'sdk-nikahdnara/core';
-import { APIResource } from 'sdk-nikahdnara/resource';
-import { isRequestOptions } from 'sdk-nikahdnara/core';
-import * as UserAPI from 'sdk-nikahdnara/resources/user';
+import { APIResource } from '../resource';
+import { isRequestOptions } from '../core';
+import * as Core from '../core';
 
 export class UserResource extends APIResource {
   /**
    * This can only be done by the logged in user.
    */
-  create(body?: UserCreateParams, options?: Core.RequestOptions): Core.APIPromise<void>;
-  create(options?: Core.RequestOptions): Core.APIPromise<void>;
+  create(body?: UserCreateParams, options?: Core.RequestOptions): Core.APIPromise<User>;
+  create(options?: Core.RequestOptions): Core.APIPromise<User>;
   create(
     body: UserCreateParams | Core.RequestOptions = {},
     options?: Core.RequestOptions,
-  ): Core.APIPromise<void> {
+  ): Core.APIPromise<User> {
     if (isRequestOptions(body)) {
       return this.create({}, body);
     }
-    return this._client.post('/user', { body, ...options, headers: { Accept: '*/*', ...options?.headers } });
+    return this._client.post('/user', { body, ...options });
   }
 
   /**
@@ -175,11 +174,13 @@ export interface UserLoginParams {
   username?: string;
 }
 
-export namespace UserResource {
-  export import User = UserAPI.User;
-  export import UserLoginResponse = UserAPI.UserLoginResponse;
-  export import UserCreateParams = UserAPI.UserCreateParams;
-  export import UserUpdateParams = UserAPI.UserUpdateParams;
-  export import UserCreateWithListParams = UserAPI.UserCreateWithListParams;
-  export import UserLoginParams = UserAPI.UserLoginParams;
+export declare namespace UserResource {
+  export {
+    type User as User,
+    type UserLoginResponse as UserLoginResponse,
+    type UserCreateParams as UserCreateParams,
+    type UserUpdateParams as UserUpdateParams,
+    type UserCreateWithListParams as UserCreateWithListParams,
+    type UserLoginParams as UserLoginParams,
+  };
 }

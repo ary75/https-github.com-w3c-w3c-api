@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { toFile, type ResponseLike } from 'sdk-nikahdnara/uploads';
-import { File } from 'sdk-nikahdnara/_shims/index';
+import { toFile, type ResponseLike } from 'petstore/uploads';
+import { File } from 'petstore/_shims/index';
 
 class MyClass {
   name: string = 'foo';
@@ -53,5 +53,13 @@ describe('toFile', () => {
     const input = fs.createReadStream('tests/uploads.test.ts');
     const file = await toFile(input);
     expect(file.name).toEqual('uploads.test.ts');
+  });
+
+  it('does not copy File objects', async () => {
+    const input = new File(['foo'], 'input.jsonl', { type: 'jsonl' });
+    const file = await toFile(input);
+    expect(file).toBe(input);
+    expect(file.name).toEqual('input.jsonl');
+    expect(file.type).toBe('jsonl');
   });
 });
